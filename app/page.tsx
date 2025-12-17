@@ -265,29 +265,6 @@ export default function Page() {
             앱 설치
           </InstallButton>
 
-          {/* 카카오 채팅문의 — 로그인 버튼과 동일 스타일 */}
-          <a
-            href="http://pf.kakao.com/_IxgdJj/chat"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              ...buttonStyle,
-              marginTop: 8,
-              textDecoration: "none",
-              display: "block",
-              textAlign: "center",
-              color: "#ffffff",
-            }}
-            onMouseEnter={(e) =>
-              ((e.currentTarget as HTMLAnchorElement).style.background = BTN_BLUE_HOVER)
-            }
-            onMouseLeave={(e) =>
-              ((e.currentTarget as HTMLAnchorElement).style.background = BTN_BLUE)
-            }
-          >
-            카카오 채팅문의
-          </a>
-
           <ProductPreview />
 
           <div

@@ -100,27 +100,8 @@ export default async function DashboardPage() {
       </div>
 
       <section style={{ marginTop: 24 }}>
-        {/* /ledger 이동 버튼 */}
-        <a href="/ledger" style={{ textDecoration: "none" }}>
-          <button type="button" style={btnStyle}>
-            거래내역 보기
-          </button>
-        </a>
-
         {/* 앱 설치 버튼 (PWA 설치 가능 시에만 보임) */}
         <InstallButton style={btnStyle}>앱 설치</InstallButton>
-
-        {/* 카카오 채팅문의 */}
-        <a
-          href="http://pf.kakao.com/_IxgdJj/chat"
-          target="_blank"
-          rel="noreferrer"
-          style={{ textDecoration: "none" }}
-        >
-          <button type="button" style={btnStyle}>
-            카카오 채팅문의
-          </button>
-        </a>
 
         <ProductToggle />
       </section>
