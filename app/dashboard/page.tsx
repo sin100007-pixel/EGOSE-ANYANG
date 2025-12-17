@@ -116,8 +116,8 @@ export default async function DashboardPage() {
         }}
       >
         <div>이고세(주)</div>
-        <div>경기도 안산시 상록구 안산천서로 237</div>
-        <div>Tel. 031-486-6882</div>
+        <div>경기도 안양시 호계동 경수대로603</div>
+        <div>Tel. 031-427-6254</div>
       </div>
 
       {/* 푸터 아래 링크형 로그아웃 */}
