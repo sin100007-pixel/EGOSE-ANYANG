@@ -116,7 +116,7 @@ export default async function DashboardPage() {
         }}
       >
         <div>삼성필름 이고세</div>
-        <div>경기도 안양시 호계동 경수대로603</div>
+        <div>경기도 안양시 호계동 경수대로602</div>
         <div>Tel. 031-427-6254</div>
       </div>
 
