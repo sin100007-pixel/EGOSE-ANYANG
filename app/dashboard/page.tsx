@@ -105,6 +105,13 @@ export default async function DashboardPage() {
         </div>
 
         <section style={{ marginTop: 24 }}>
+          {/* ✅ /ledger 이동 버튼 (거래내역 보기) */}
+          <a href="/ledger" style={{ textDecoration: "none" }}>
+            <button type="button" style={btnStyle}>
+              거래내역 보기
+            </button>
+          </a>
+
           {/* 앱 설치 버튼 (PWA 설치 가능 시에만 보임) */}
           <InstallButton style={btnStyle}>앱 설치</InstallButton>
 
