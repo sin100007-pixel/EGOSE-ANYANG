@@ -76,21 +76,33 @@ function isAllZeroRow(r: Record<string, any>): boolean {
 
 /* 헤더 감지 */
 const HEADER_WORDS = new Set([
-  "거래처","고객명","코드","전표","코드명",
-  "품명","상품명","품목",
-  "규격","규격명",
+  "거래처",
+  "고객명",
+  "코드",
+  "전표",
+  "코드명",
+  "품명",
+  "상품명",
+  "품목",
+  "규격",
+  "규격명",
   "단위",
   "수량",
   "단가",
-  "매출금액","공급가액","판매금액",
-  "전일잔액","이월",
-  "입금액","입금",
-  "금일잔액","현재잔액",
+  "매출금액",
+  "공급가액",
+  "판매금액",
+  "전일잔액",
+  "이월",
+  "입금액",
+  "입금",
+  "금일잔액",
+  "현재잔액",
   "비고",
 ]);
 function isHeaderLikeRow(cells: string[]): boolean {
   if (cells.length === 0) return false;
-  if (["거래처","고객명","총계","합계"].includes(cells[0])) return true;
+  if (["거래처", "고객명", "총계", "합계"].includes(cells[0])) return true;
   const nonEmpty = cells.filter((s) => s !== "");
   if (nonEmpty.length === 0) return false;
   const headerCount = nonEmpty.filter((s) => HEADER_WORDS.has(s)).length;
@@ -108,7 +120,10 @@ function parseForm(req: NextApiRequest): Promise<{ fields: any; files: any }> {
     });
   });
 }
-function firstOf<T = any>(obj: Record<string, any> | undefined, keys: string[]): T | undefined {
+function firstOf<T = any>(
+  obj: Record<string, any> | undefined,
+  keys: string[]
+): T | undefined {
   if (!obj) return undefined;
   for (const k of keys) {
     const v: any = (obj as any)[k];
@@ -123,8 +138,9 @@ function firstOf<T = any>(obj: Record<string, any> | undefined, keys: string[]):
 function pickFirstFile(files: any): any {
   for (const key of Object.keys(files || {})) {
     const v: any = (files as any)[key];
-    if (Array.isArray(v)) { if (v.length > 0) return v[0]; }
-    else if (v) return v;
+    if (Array.isArray(v)) {
+      if (v.length > 0) return v[0];
+    } else if (v) return v;
   }
   return null;
 }
@@ -150,29 +166,45 @@ function readRowsFromUpload(filePath: string): Row[] {
 }
 
 /* ============================== Supabase REST 호출 ============================== */
-function httpsRequest(urlStr: string, method: string, headers: Record<string, string>, body?: string) {
-  return new Promise<{ status: number; text: string; headers: any }>((resolve, reject) => {
-    try {
-      const u = new URL(urlStr);
-      const req = https.request(
-        { method, hostname: u.hostname, path: u.pathname + u.search, headers },
-        (res) => {
-          const chunks: Buffer[] = [];
-          res.on("data", (d) => chunks.push(d as Buffer));
-          res.on("end", () =>
-            resolve({ status: res.statusCode || 0, text: Buffer.concat(chunks).toString("utf8"), headers: res.headers })
-          );
-        }
-      );
-      req.on("error", reject);
-      if (body) req.write(body);
-      req.end();
-    } catch (e) { reject(e); }
-  });
+function httpsRequest(
+  urlStr: string,
+  method: string,
+  headers: Record<string, string>,
+  body?: string
+) {
+  return new Promise<{ status: number; text: string; headers: any }>(
+    (resolve, reject) => {
+      try {
+        const u = new URL(urlStr);
+        const req = https.request(
+          { method, hostname: u.hostname, path: u.pathname + u.search, headers },
+          (res) => {
+            const chunks: Buffer[] = [];
+            res.on("data", (d) => chunks.push(d as Buffer));
+            res.on("end", () =>
+              resolve({
+                status: res.statusCode || 0,
+                text: Buffer.concat(chunks).toString("utf8"),
+                headers: res.headers,
+              })
+            );
+          }
+        );
+        req.on("error", reject);
+        if (body) req.write(body);
+        req.end();
+      } catch (e) {
+        reject(e);
+      }
+    }
+  );
 }
 
 /* ============================== 메인 핸들러 ============================== */
-export default async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse<Data>
+) {
   if (req.method !== "POST") {
     return res.status(405).json({ ok: false, message: "POST only" });
   }
@@ -181,8 +213,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     const { fields, files } = await parseForm(req);
 
     // 기준일
-    const baseDateField = firstOf<string>(fields as any, ["baseDate","base_date","기준일","date","startDate"]);
-    const baseDateQuery = firstOf<string>(req.query as any, ["baseDate","base_date","기준일","date","startDate"]);
+    const baseDateField = firstOf<string>(fields as any, [
+      "baseDate",
+      "base_date",
+      "기준일",
+      "date",
+      "startDate",
+    ]);
+    const baseDateQuery = firstOf<string>(req.query as any, [
+      "baseDate",
+      "base_date",
+      "기준일",
+      "date",
+      "startDate",
+    ]);
     const baseDateRaw = baseDateField ?? baseDateQuery;
     const today = toYMD(new Date());
     const baseDate = toYMD(baseDateRaw) || today;
@@ -191,7 +235,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     // 파일
     const fileObj: any = pickFirstFile(files);
     if (!fileObj?.filepath && !fileObj?.path) {
-      return res.status(400).json({ ok: false, message: "업로드된 파일을 찾을 수 없습니다. (input type='file')" });
+      return res
+        .status(400)
+        .json({ ok: false, message: "업로드된 파일을 찾을 수 없습니다. (input type='file')" });
     }
     const filepath = fileObj.filepath || fileObj.path;
     const rawRows = readRowsFromUpload(filepath);
@@ -206,12 +252,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
     // 파싱 & 정리
     let currentName = "";
+    let currentCode = ""; // ✅ 추가: 코드 이어받기
     let rowNo = 0;
     const normalized: any[] = [];
 
     for (const r of rawRows) {
       const c0 = S(r[firstColKey]);
-      const c1 = S(r[K(1)]), c2 = S(r[K(2)]), c3 = S(r[K(3)]), c4 = S(r[K(4)]);
+      const c1 = S(r[K(1)]),
+        c2 = S(r[K(2)]),
+        c3 = S(r[K(3)]),
+        c4 = S(r[K(4)]);
 
       // 0만 있는 줄/빈 줄/헤더/소계/총계 스킵
       if (isAllZeroRow(r)) continue;
@@ -219,6 +269,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       const headerLikeA = c0.includes("매출일보") && c1 === "코드";
       const headerLikeB = isHeaderLikeRow([c0, c1, c2, c3, c4]);
       if (emptyLine || headerLikeA || headerLikeB) continue;
+
       if (/^\s*소계\s*:/i.test(c0) || /^\s*총계/i.test(c0)) {
         if (/^\s*소계\s*:/i.test(c0)) currentName = c0.replace(/^소계\s*:/i, "").trim();
         continue;
@@ -229,7 +280,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       else if (c0) currentName = c0.trim();
       const name = currentName;
 
-      const erp_customer_code = S(r[K(1)]) || null;
+      // ✅ 코드 추적/보정
+      const codeCell = S(r[K(1)]);
+      if (codeCell) currentCode = codeCell; // 코드 칸이 있으면 갱신
+      let erp_customer_code = currentCode;
+
+      // 코드가 끝까지 없거나, 특정 파일에서 코드가 아예 없는 경우 대비
+      // NOT NULL 만족을 위해 name 기반 대체값 생성
+      if (!erp_customer_code) {
+        if (name) erp_customer_code = `NAME:${name}`;
+        else erp_customer_code = "UNKNOWN";
+      }
+
       const item_name = S(r[K(2)]) || null;
       const spec = S(r[K(3)]) || null;
 
@@ -258,8 +320,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       const hasMeaning =
         (name && name !== "거래처" && name !== "고객명") ||
         (item_name && item_name !== "품명" && item_name !== "상품명") ||
-        qty != null || unit_price != null || amount != null ||
-        deposit != null || prev_balance != null || curr_balance != null;
+        qty != null ||
+        unit_price != null ||
+        amount != null ||
+        deposit != null ||
+        prev_balance != null ||
+        curr_balance != null;
       if (!hasMeaning) continue;
 
       rowNo += 1;
@@ -274,9 +340,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
       normalized.push({
         erp_row_key,
-        tx_date,            // YYYY-MM-DD
-        row_no: rowNo,      // 업로드 순번 (정렬에 사용)
-        erp_customer_code,
+        tx_date, // YYYY-MM-DD
+        row_no: rowNo, // 업로드 순번 (정렬에 사용)
+        erp_customer_code, // ✅ 이제 절대 null 아님
         name: name || null, // customer_name
         item_name,
         spec,
@@ -342,6 +408,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     });
   } catch (err: any) {
     console.error(err);
-    return res.status(500).json({ ok: false, message: "업로드/저장 처리 중 오류", detail: err?.message });
+    return res
+      .status(500)
+      .json({ ok: false, message: "업로드/저장 처리 중 오류", detail: err?.message });
   }
 }
