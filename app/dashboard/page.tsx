@@ -112,6 +112,16 @@ export default async function DashboardPage() {
             </button>
           </a>
 
+          {/* ✅ 출고내용남기기 (카카오 채팅 링크) */}
+          <a
+            href="http://pf.kakao.com/_MbLSG/chat"
+            style={{ textDecoration: "none" }}
+          >
+            <button type="button" style={btnStyle}>
+              출고내용남기기
+            </button>
+          </a>
+
           {/* 앱 설치 버튼 (PWA 설치 가능 시에만 보임) */}
           <InstallButton style={btnStyle}>앱 설치</InstallButton>
 
