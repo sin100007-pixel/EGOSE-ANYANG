@@ -344,7 +344,7 @@ export default function LedgerPage() {
             className="space-y-[2px] font-medium text-red-400 eg-notice"
             style={{ color: "#f87171" }} // red-400 강제
           >
-            <li>* 금일 발주 건은 차일 오후12시에 반영됩니다.</li>
+            <li>* 금주 발주 건은 익주에 반영됩니다.</li>
             <li>** 누락, 중복, 오기입이 있을 수 있습니다. 대략으로만 봐주세요.</li>
             <li>
               *** 최근거래의 대략을 보여주므로 정확한 내용은 이고세로 직접 연락주세요.
