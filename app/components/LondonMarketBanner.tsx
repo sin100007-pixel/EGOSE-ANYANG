@@ -87,7 +87,7 @@ export default function LondonMarketBanner() {
 
         .year-message {
           position: absolute;
-          left: 50%;
+          left: 49%;
           transform: translateX(-50%);
           z-index: 3;
           text-align: center;
