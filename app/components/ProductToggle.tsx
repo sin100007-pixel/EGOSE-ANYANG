@@ -1,40 +1,60 @@
-// app/components/ProductToggle.tsx
 "use client";
 
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import ProductPreview from "@/app/product-preview";
 
-export default function ProductToggle() {
+type ProductToggleProps = {
+  /** 부모(DashboardClient 등)에서 버튼 스타일을 주입하고 싶을 때 사용 */
+  buttonStyle?: React.CSSProperties;
+};
+
+export default function ProductToggle({ buttonStyle }: ProductToggleProps) {
   const [open, setOpen] = useState(false);
 
-  const buttonStyle: React.CSSProperties = {
-    display: "block",
-    width: "100%",
-    boxSizing: "border-box",
-    padding: 12,
-    margin: "0 0 12px 0",
-    borderRadius: 12,
-    border: "1px solid transparent",
-    background: "#0019C9", // ✅ 로그인/다른 버튼들과 동일한 파란색
-    color: "#ffffff",
-    fontWeight: 700,
-    fontSize: 16, // ✅ 글자 크기 통일
-    textAlign: "center",
-    cursor: "pointer",
-  };
+  // 기존 기본 버튼 스타일 (백업본과 동일)
+  const defaultButtonStyle: React.CSSProperties = useMemo(
+    () => ({
+      display: "block",
+      width: "100%",
+      boxSizing: "border-box",
+      padding: 12,
+      margin: "0 0 12px 0",
+      borderRadius: 12,
+      border: "1px solid transparent",
+      background: "#0019C9", // ✅ 로그인/다른 버튼들과 동일한 파란색
+      color: "#ffffff",
+      fontWeight: 700,
+      fontSize: 16, // ✅ 글자 크기 통일
+      textAlign: "center",
+      cursor: "pointer",
+    }),
+    []
+  );
+
+  // 부모가 스타일을 넘기면 기본 스타일 위에 덮어쓰기
+  const mergedButtonStyle: React.CSSProperties = useMemo(
+    () => ({ ...defaultButtonStyle, ...(buttonStyle ?? {}) }),
+    [defaultButtonStyle, buttonStyle]
+  );
 
   return (
     <div>
       {/* 부모 토글 버튼 (여기서만 인터랙션) */}
       <button
         type="button"
-        style={buttonStyle}
+        style={mergedButtonStyle}
         onClick={() => setOpen((v) => !v)}
         onMouseEnter={(e) => {
-          (e.currentTarget as HTMLButtonElement).style.background = "#1326D9"; // hover
+          // hover: 부모에서 background를 줬더라도, 기존 동작 유지
+          (e.currentTarget as HTMLButtonElement).style.background = "#1326D9";
         }}
         onMouseLeave={(e) => {
-          (e.currentTarget as HTMLButtonElement).style.background = "#0019C9";
+          // leave: 부모에서 background를 줬다면 그 값으로, 아니면 기본값으로 복귀
+          const bg =
+            (buttonStyle && (buttonStyle as React.CSSProperties).background) ||
+            defaultButtonStyle.background ||
+            "#0019C9";
+          (e.currentTarget as HTMLButtonElement).style.background = String(bg);
         }}
       >
         {open ? "상품 사진 닫기(확대해서 보세요.)" : "판매중인 상품 보기"}
