@@ -5,7 +5,6 @@ import { prisma } from "@/lib/prisma";
 import ProductToggle from "@/app/components/ProductToggle";
 import InstallButton from "@/app/components/InstallButton";
 import LondonMarketBanner from "@/app/components/LondonMarketBanner";
-import Snowfall from "@/app/components/Snowfall"; // ✅ 추가
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -55,8 +54,6 @@ export default async function DashboardPage() {
 
   return (
     <>
-      {/* ✅ 눈 내리는 레이어 (클릭/스크롤 방해 X) */}
-      <Snowfall count={90} opacity={0.85} zIndex={60} />
 
       <main
         style={{

@@ -4,7 +4,6 @@ import React from "react";
 import InstallButton from "@/app/components/InstallButton";
 import ProductToggle from "@/app/components/ProductToggle";
 import LondonMarketBanner from "@/app/components/LondonMarketBanner";
-import Snowfall from "@/app/components/Snowfall";
 
 type Props = {
   name: string;
@@ -34,8 +33,6 @@ export default function DashboardClient({ name, phoneLast4, qrUrl }: Props) {
 
   return (
     <>
-      {/* 눈은 항상 맨 위 */}
-      <Snowfall count={90} opacity={0.85} zIndex={9999} />
 
       <main className="dash-root">
         {/* ✅ 남색 background 위로 올라오는 밝아짐 오버레이 */}
