@@ -21,10 +21,10 @@ export default function ProductToggle({ buttonStyle }: ProductToggleProps) {
       margin: "0 0 12px 0",
       borderRadius: 12,
       border: "1px solid transparent",
-      background: "#0019C9", // ✅ 로그인/다른 버튼들과 동일한 파란색
-      color: "#ffffff",
+      background: "#f7b6c8", // ✅ 로그인/다른 버튼들과 동일한 파란색
+      color: "#111111",
       fontWeight: 700,
-      fontSize: 16, // ✅ 글자 크기 통일
+      fontSize: 14, // ✅ 글자 크기 통일
       textAlign: "center",
       cursor: "pointer",
     }),
@@ -46,14 +46,14 @@ export default function ProductToggle({ buttonStyle }: ProductToggleProps) {
         onClick={() => setOpen((v) => !v)}
         onMouseEnter={(e) => {
           // hover: 부모에서 background를 줬더라도, 기존 동작 유지
-          (e.currentTarget as HTMLButtonElement).style.background = "#1326D9";
+          (e.currentTarget as HTMLButtonElement).style.background = "#f7b6c8";
         }}
         onMouseLeave={(e) => {
           // leave: 부모에서 background를 줬다면 그 값으로, 아니면 기본값으로 복귀
           const bg =
             (buttonStyle && (buttonStyle as React.CSSProperties).background) ||
             defaultButtonStyle.background ||
-            "#0019C9";
+            "#f7b6c8";
           (e.currentTarget as HTMLButtonElement).style.background = String(bg);
         }}
       >
