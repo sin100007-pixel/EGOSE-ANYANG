@@ -1,10 +1,10 @@
-// app/dashboard/page.tsx
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import ProductToggle from "@/app/components/ProductToggle";
 import InstallButton from "@/app/components/InstallButton";
 import LondonMarketBanner from "@/app/components/LondonMarketBanner";
+import EgoseBannerCarousel from "@/app/components/EgoseBannerCarousel";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -42,6 +42,7 @@ export default async function DashboardPage() {
     color: "rgba(255,255,255,0.6)",
     textAlign: "center",
   };
+
   const logoutLinkStyle: React.CSSProperties = {
     ...footerTextStyle,
     textDecoration: "underline",
@@ -53,103 +54,101 @@ export default async function DashboardPage() {
   };
 
   return (
-    <>
+    <main
+      style={{
+        maxWidth: 1100,
+        margin: "0 auto",
+        padding: "24px 16px 80px",
+        color: "#fff",
+        background: "#0F0C2E",
+        minHeight: "100vh",
+      }}
+    >
+      <header style={{ width: "100%", marginBottom: 16 }}>
+        {/* LONDON MARKET 이미지 10번 클릭 시 /admin/dashboard 로 이동 */}
+        <LondonMarketBanner />
+      </header>
 
-      <main
+      {/* 로고 아래 배너 추가 */}
+      <section style={{ width: "100%", marginBottom: 20 }}>
+        <EgoseBannerCarousel />
+      </section>
+
+      <h1 style={{ fontSize: 28, fontWeight: 800, marginBottom: 16 }}>
+        {name}님의 QR
+      </h1>
+
+      <div
         style={{
-          maxWidth: 1100,
-          margin: "0 auto",
-          padding: "24px 16px 80px",
-          color: "#fff",
-          background: "#0F0C2E",
-          minHeight: "100vh",
+          display: "flex",
+          gap: 24,
+          alignItems: "flex-start",
+          flexWrap: "wrap",
         }}
       >
-        <header style={{ width: "100%", marginBottom: 16 }}>
-          {/* LONDON MARKET 이미지 10번 클릭 시 /admin/dashboard 로 이동 */}
-          <LondonMarketBanner />
-        </header>
-
-        <h1 style={{ fontSize: 28, fontWeight: 800, marginBottom: 16 }}>
-          {name}님의 QR
-        </h1>
-
         <div
           style={{
-            display: "flex",
-            gap: 24,
-            alignItems: "flex-start",
-            flexWrap: "wrap",
+            width: 260,
+            borderRadius: 12,
+            overflow: "hidden",
+            background: "#111",
           }}
         >
-          <div
-            style={{
-              width: 260,
-              borderRadius: 12,
-              overflow: "hidden",
-              background: "#111",
-            }}
-          >
-            <img
-              src={user.qrUrl}
-              alt="QR"
-              style={{ display: "block", width: "100%", height: "auto" }}
-            />
-          </div>
-          <div style={{ alignSelf: "center" }}>
-            <p style={{ opacity: 0.9, marginTop: 8 }}>
-              전화번호 뒷자리: {user.phoneLast4}
-            </p>
-          </div>
+          <img
+            src={user.qrUrl}
+            alt="QR"
+            style={{ display: "block", width: "100%", height: "auto" }}
+          />
         </div>
 
-        <section style={{ marginTop: 24 }}>
-          {/* ✅ /ledger 이동 버튼 (거래내역 보기) */}
-          <a href="/ledger" style={{ textDecoration: "none" }}>
-            <button type="button" style={btnStyle}>
-              거래내역 보기
-            </button>
-          </a>
-
-          {/* ✅ 출고내용남기기 (카카오 채팅 링크) */}
-          <a
-            href="http://pf.kakao.com/_MbLSG/chat"
-            style={{ textDecoration: "none" }}
-          >
-            <button type="button" style={btnStyle}>
-              출고내용남기기
-            </button>
-          </a>
-
-          {/* 앱 설치 버튼 (PWA 설치 가능 시에만 보임) */}
-          <InstallButton style={btnStyle}>앱 설치</InstallButton>
-
-          <ProductToggle />
-        </section>
-
-        {/* 회사 정보 푸터 */}
-        <div
-          style={{
-            marginTop: 24,
-            paddingTop: 8,
-            borderTop: "1px solid rgba(255,255,255,0.08)",
-            ...footerTextStyle,
-          }}
-        >
-          <div>삼성필름 이고세</div>
-          <div>경기도 안양시 호계동 경수대로602</div>
-          <div>Tel. 031-427-6254</div>
-        </div>
-
-        {/* 푸터 아래 링크형 로그아웃 */}
-        <form action="/api/logout" method="POST" style={{ marginTop: 4 }}>
-          <p style={{ textAlign: "center", margin: 0 }}>
-            <button type="submit" style={logoutLinkStyle}>
-              로그아웃
-            </button>
+        <div style={{ alignSelf: "center" }}>
+          <p style={{ opacity: 0.9, marginTop: 8 }}>
+            전화번호 뒷자리: {user.phoneLast4}
           </p>
-        </form>
-      </main>
-    </>
+        </div>
+      </div>
+
+      <section style={{ marginTop: 24 }}>
+        <a href="/ledger" style={{ textDecoration: "none" }}>
+          <button type="button" style={btnStyle}>
+            거래내역 보기
+          </button>
+        </a>
+
+        <a
+          href="http://pf.kakao.com/_MbLSG/chat"
+          style={{ textDecoration: "none" }}
+        >
+          <button type="button" style={btnStyle}>
+            출고내용남기기
+          </button>
+        </a>
+
+        <InstallButton style={btnStyle}>앱 설치</InstallButton>
+
+        <ProductToggle />
+      </section>
+
+      <div
+        style={{
+          marginTop: 24,
+          paddingTop: 8,
+          borderTop: "1px solid rgba(255,255,255,0.08)",
+          ...footerTextStyle,
+        }}
+      >
+        <div>삼성필름 이고세</div>
+        <div>경기도 안양시 호계동 경수대로602</div>
+        <div>Tel. 031-427-6254</div>
+      </div>
+
+      <form action="/api/logout" method="POST" style={{ marginTop: 4 }}>
+        <p style={{ textAlign: "center", margin: 0 }}>
+          <button type="submit" style={logoutLinkStyle}>
+            로그아웃
+          </button>
+        </p>
+      </form>
+    </main>
   );
 }
