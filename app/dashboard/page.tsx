@@ -101,7 +101,11 @@ export default async function DashboardPage() {
 
       {/* 실제 내용 */}
       <div style={{ position: "relative", zIndex: 2 }}>
-        <header style={{ width: "100%", marginBottom: 16 }}>
+        <header style={{
+           width: "100%",
+           marginBottom: 16, 
+           transform: "translateX(-50px)",
+            }}>
           <LondonMarketBanner />
         </header>
 

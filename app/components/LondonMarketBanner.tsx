@@ -1,4 +1,3 @@
-// app/components/LondonMarketBanner.tsx
 "use client";
 
 import Image from "next/image";
@@ -13,10 +12,9 @@ export default function LondonMarketBanner() {
     setClickCount((prev) => {
       const next = prev + 1;
 
-      // 10번 클릭되면 /admin/dashboard 로 이동
       if (next >= 10) {
         router.push("/admin/dashboard");
-        return 0; // 이동 후 카운트 리셋
+        return 0;
       }
 
       return next;
@@ -33,8 +31,6 @@ export default function LondonMarketBanner() {
         borderRadius: 12,
         overflow: "hidden",
         cursor: "pointer",
-
-        // ✅ 모바일에서 파란 클릭 하이라이트 제거
         WebkitTapHighlightColor: "transparent",
         userSelect: "none",
       }}
@@ -45,7 +41,7 @@ export default function LondonMarketBanner() {
         fill
         priority
         sizes="100vw"
-        style={{ objectFit: "cover" }}
+        style={{ objectFit: "contain" }}
       />
     </div>
   );
