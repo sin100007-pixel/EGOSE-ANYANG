@@ -16,10 +16,8 @@ export default async function DashboardPage() {
 
   const user = await prisma.user.findFirst({ where: { name } });
 
-  // ✅ 1단계: DB에 회원이 없으면 세션 쿠키 삭제 후 이동(무한 '로그인중' 방지)
   if (!user) redirect("/api/logout");
 
-  // 공통 버튼 스타일 (ledger/설치/카카오)
   const btnStyle: React.CSSProperties = {
     display: "block",
     width: "100%",
@@ -35,7 +33,6 @@ export default async function DashboardPage() {
     cursor: "pointer",
   };
 
-  // 푸터(회사정보)와 동일 톤/크기의 링크형 로그아웃 스타일
   const footerTextStyle: React.CSSProperties = {
     fontSize: 12,
     lineHeight: "18px",
@@ -65,11 +62,9 @@ export default async function DashboardPage() {
       }}
     >
       <header style={{ width: "100%", marginBottom: 16 }}>
-        {/* LONDON MARKET 이미지 10번 클릭 시 /admin/dashboard 로 이동 */}
         <LondonMarketBanner />
       </header>
 
-      {/* 로고 아래 배너 추가 */}
       <section style={{ width: "100%", marginBottom: 20 }}>
         <EgoseBannerCarousel />
       </section>
@@ -80,32 +75,17 @@ export default async function DashboardPage() {
 
       <div
         style={{
-          display: "flex",
-          gap: 24,
-          alignItems: "flex-start",
-          flexWrap: "wrap",
+          width: 220,
+          borderRadius: 12,
+          overflow: "hidden",
+          background: "#111",
         }}
       >
-        <div
-          style={{
-            width: 260,
-            borderRadius: 12,
-            overflow: "hidden",
-            background: "#111",
-          }}
-        >
-          <img
-            src={user.qrUrl}
-            alt="QR"
-            style={{ display: "block", width: "100%", height: "auto" }}
-          />
-        </div>
-
-        <div style={{ alignSelf: "center" }}>
-          <p style={{ opacity: 0.9, marginTop: 8 }}>
-            전화번호 뒷자리: {user.phoneLast4}
-          </p>
-        </div>
+        <img
+          src={user.qrUrl}
+          alt="QR"
+          style={{ display: "block", width: "100%", height: "auto" }}
+        />
       </div>
 
       <section style={{ marginTop: 24 }}>
