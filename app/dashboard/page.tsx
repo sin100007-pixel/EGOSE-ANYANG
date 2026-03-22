@@ -5,6 +5,7 @@ import ProductToggle from "@/app/components/ProductToggle";
 import InstallButton from "@/app/components/InstallButton";
 import LondonMarketBanner from "@/app/components/LondonMarketBanner";
 import EgoseBannerCarousel from "@/app/components/EgoseBannerCarousel";
+import CherryBlossomPetals from "@/app/components/CherryBlossomPetals";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -53,6 +54,8 @@ export default async function DashboardPage() {
   return (
     <main
       style={{
+        position: "relative",
+        overflow: "hidden",
         maxWidth: 1100,
         margin: "0 auto",
         padding: "24px 16px 80px",
@@ -61,74 +64,114 @@ export default async function DashboardPage() {
         minHeight: "100vh",
       }}
     >
-      <header style={{ width: "100%", marginBottom: 16 }}>
-        <LondonMarketBanner />
-      </header>
-
-      <section style={{ width: "100%", marginBottom: 20 }}>
-        <EgoseBannerCarousel />
-      </section>
-
-      <h1 style={{ fontSize: 28, fontWeight: 800, marginBottom: 16 }}>
-        {name}님의 QR
-      </h1>
-
+      {/* 오른쪽 벚꽃 배경 장식 */}
       <div
         style={{
-          width: 220,
-          borderRadius: 12,
-          overflow: "hidden",
-          background: "#111",
+          position: "absolute",
+          top: -40,
+          right: -10,
+          width: "62%",
+          maxWidth: 640,
+          minWidth: 260,
+          height: "100%",
+          pointerEvents: "none",
+          opacity: 0.94,
+          zIndex: 0,
+          display: "flex",
+          justifyContent: "flex-end",
+          alignItems: "flex-start",
         }}
       >
         <img
-          src={user.qrUrl}
-          alt="QR"
-          style={{ display: "block", width: "100%", height: "auto" }}
+          src="/cherry-blossom-right.png"
+          alt=""
+          aria-hidden="true"
+          style={{
+            display: "block",
+            width: "100%",
+            height: "auto",
+            objectFit: "contain",
+            transform: "translateY(30px)",
+          }}
         />
       </div>
 
-      <section style={{ marginTop: 24 }}>
-        <a href="/ledger" style={{ textDecoration: "none" }}>
-          <button type="button" style={btnStyle}>
-            거래내역 보기
-          </button>
-        </a>
+      {/* 벚꽃잎 흩날림 */}
+      <CherryBlossomPetals />
 
-        <a
-          href="http://pf.kakao.com/_MbLSG/chat"
-          style={{ textDecoration: "none" }}
+      {/* 실제 내용 */}
+      <div style={{ position: "relative", zIndex: 2 }}>
+        <header style={{ width: "100%", marginBottom: 16 }}>
+          <LondonMarketBanner />
+        </header>
+
+        <section style={{ width: "100%", marginBottom: 20 }}>
+          <EgoseBannerCarousel />
+        </section>
+
+        <h1 style={{ fontSize: 28, fontWeight: 800, marginBottom: 16 }}>
+          {name}님의 QR
+        </h1>
+
+        <div
+          style={{
+            width: 220,
+            borderRadius: 12,
+            overflow: "hidden",
+            background: "#111",
+          }}
         >
-          <button type="button" style={btnStyle}>
-            출고내용남기기
-          </button>
-        </a>
+          <img
+            src={user.qrUrl}
+            alt="QR"
+            style={{ display: "block", width: "100%", height: "auto" }}
+          />
+        </div>
 
-        <InstallButton style={btnStyle}>앱 설치</InstallButton>
+        <section style={{ marginTop: 24 }}>
+          <a href="/ledger" style={{ textDecoration: "none" }}>
+            <button type="button" style={btnStyle}>
+              거래내역 보기
+            </button>
+          </a>
 
-        <ProductToggle />
-      </section>
+          <a
+            href="http://pf.kakao.com/_MbLSG/chat"
+            target="_blank"
+            rel="noreferrer"
+            style={{ textDecoration: "none" }}
+          >
+            <button type="button" style={btnStyle}>
+              출고내용남기기
+            </button>
+          </a>
 
-      <div
-        style={{
-          marginTop: 24,
-          paddingTop: 8,
-          borderTop: "1px solid rgba(255,255,255,0.08)",
-          ...footerTextStyle,
-        }}
-      >
-        <div>삼성필름 이고세</div>
-        <div>경기도 안양시 호계동 경수대로602</div>
-        <div>Tel. 031-427-6254</div>
+          <InstallButton style={btnStyle}>앱 설치</InstallButton>
+
+          <ProductToggle />
+        </section>
+
+        <div
+          style={{
+            marginTop: 24,
+            paddingTop: 8,
+            borderTop: "1px solid rgba(255,255,255,0.08)",
+            ...footerTextStyle,
+          }}
+        >
+          <div>삼성필름 이고세</div>
+          <div>경기도 안양시 호계동 경수대로602</div>
+          <div>Tel. 031-427-6254</div>
+        </div>
+
+        <form action="/api/logout" method="POST" style={{ marginTop: 4 }}>
+          <p style={{ textAlign: "center", margin: 0 }}>
+            <button type="submit" style={logoutLinkStyle}>
+              로그아웃
+            </button>
+          </p>
+        </form>
       </div>
-
-      <form action="/api/logout" method="POST" style={{ marginTop: 4 }}>
-        <p style={{ textAlign: "center", margin: 0 }}>
-          <button type="submit" style={logoutLinkStyle}>
-            로그아웃
-          </button>
-        </p>
-      </form>
     </main>
   );
 }
