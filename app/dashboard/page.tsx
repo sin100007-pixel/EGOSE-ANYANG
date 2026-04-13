@@ -5,7 +5,6 @@ import ProductToggle from "@/app/components/ProductToggle";
 import InstallButton from "@/app/components/InstallButton";
 import LondonMarketBanner from "@/app/components/LondonMarketBanner";
 import EgoseBannerCarousel from "@/app/components/EgoseBannerCarousel";
-import CherryBlossomPetals from "@/app/components/CherryBlossomPetals";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -26,8 +25,8 @@ export default async function DashboardPage() {
     padding: 12,
     margin: "0 0 12px 0",
     borderRadius: 12,
-    border: "1px solid transparent",
-    background: "#f7b6c8",
+    border: "1px solid rgba(0,0,0,0.08)",
+    background: "#f4eddc",
     color: "#111111",
     fontWeight: 700,
     textAlign: "center",
@@ -64,41 +63,6 @@ export default async function DashboardPage() {
         minHeight: "100vh",
       }}
     >
-      {/* 오른쪽 벚꽃 배경 장식 */}
-      <div
-        style={{
-          position: "absolute",
-          top: -40,
-          right: -10,
-          width: "62%",
-          maxWidth: 640,
-          minWidth: 260,
-          height: "100%",
-          pointerEvents: "none",
-          opacity: 0.94,
-          zIndex: 0,
-          display: "flex",
-          justifyContent: "flex-end",
-          alignItems: "flex-start",
-        }}
-      >
-        <img
-          src="/cherry-blossom-right.png"
-          alt=""
-          aria-hidden="true"
-          style={{
-            display: "block",
-            width: "100%",
-            height: "auto",
-            objectFit: "contain",
-            transform: "translateY(30px)",
-          }}
-        />
-      </div>
-
-      {/* 벚꽃잎 흩날림 */}
-      <CherryBlossomPetals />
-
       {/* 실제 내용 */}
       <div style={{ position: "relative", zIndex: 2 }}>
         <header style={{
