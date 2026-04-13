@@ -63,13 +63,15 @@ export default async function DashboardPage() {
         minHeight: "100vh",
       }}
     >
-      {/* 실제 내용 */}
       <div style={{ position: "relative", zIndex: 2 }}>
-        <header style={{
-           width: "100%",
-           marginBottom: 16, 
-           transform: "translateX(-50px)",
-            }}>
+        <header
+          style={{
+            width: "100%",
+            marginBottom: 16,
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
           <LondonMarketBanner />
         </header>
 
