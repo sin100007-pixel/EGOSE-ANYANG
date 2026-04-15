@@ -154,7 +154,7 @@ export default function BottomQuickNav({ current = "dashboard" }: BottomQuickNav
     cream: "#F5F1E8",
   };
 
-  const [isInstalled, setIsInstalled] = useState(false);
+  const [isInstalled, setIsInstalled] = useState<boolean | null>(null);
 
   useEffect(() => {
     const checkInstalled = () => {
@@ -199,6 +199,8 @@ export default function BottomQuickNav({ current = "dashboard" }: BottomQuickNav
     router.push("/ledger");
   };
 
+  const showInstallButton = isInstalled === false;
+
   return (
     <div
       style={{
@@ -225,9 +227,7 @@ export default function BottomQuickNav({ current = "dashboard" }: BottomQuickNav
             borderRadius: "28px 28px 0 0",
             border: "1px solid rgba(0,0,0,0.06)",
             boxShadow: "0 -10px 28px rgba(0,0,0,0.24)",
-            padding: isInstalled
-              ? "14px 8px calc(12px + env(safe-area-inset-bottom))"
-              : "16px 8px calc(16px + env(safe-area-inset-bottom))",
+            padding: "14px 8px calc(12px + env(safe-area-inset-bottom))",
             overflow: "visible",
           }}
         >
@@ -254,9 +254,7 @@ export default function BottomQuickNav({ current = "dashboard" }: BottomQuickNav
               rel="noreferrer"
             />
 
-            {isInstalled ? (
-              <div aria-hidden="true" style={{ height: 1 }} />
-            ) : (
+            {showInstallButton ? (
               <InstallButton
                 aria-label="앱 설치"
                 style={{
@@ -295,6 +293,14 @@ export default function BottomQuickNav({ current = "dashboard" }: BottomQuickNav
                 </span>
                 앱 설치
               </InstallButton>
+            ) : (
+              <div
+                aria-hidden="true"
+                style={{
+                  minHeight: 74,
+                  borderRadius: 18,
+                }}
+              />
             )}
 
             <ProductToggle bottomNav active={current === "products"} />
