@@ -2,6 +2,7 @@
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
+import BottomQuickNav from "@/app/components/BottomQuickNav";
 
 /* 안전한 날짜 표기 */
 function toYMD(input?: any): string {
@@ -484,7 +485,7 @@ export default function LedgerPage() {
   const isDepositRow = (r: Row) => (r.deposit ?? 0) > 0 && (r.amount ?? 0) === 0;
 
   return (
-    <div className="wrap p-4 md:p-6 text-white" style={{ background: "#0b0d21", fontSize: 16 }}>
+    <div className="wrap p-4 md:p-6 text-white" style={{ background: "#0b0d21", fontSize: 16, paddingBottom: 180 }}>
       {/* 상단 우측 고정 버튼 */}
       <Link
         href="/dashboard"
@@ -793,6 +794,8 @@ export default function LedgerPage() {
       )}
 
       {/* 스타일 */}
+      <BottomQuickNav current="ledger" />
+
       <style jsx>{`
         :root {
           --cell-xpad: 2ch;

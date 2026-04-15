@@ -4,14 +4,160 @@ import React, { useMemo, useState } from "react";
 import ProductPreview from "@/app/product-preview";
 
 type ProductToggleProps = {
-  /** 부모(DashboardClient 등)에서 버튼 스타일을 주입하고 싶을 때 사용 */
+  /** 기존 대시보드 버튼 스타일 주입용 */
   buttonStyle?: React.CSSProperties;
+  /** 하단 퀵메뉴용 아이콘 버튼 모드 */
+  bottomNav?: boolean;
 };
 
-export default function ProductToggle({ buttonStyle }: ProductToggleProps) {
+function ProductIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" aria-hidden="true">
+      <rect x="4" y="5" width="16" height="14" rx="2.8" stroke="currentColor" strokeWidth="1.9" />
+      <path d="M8 9h8M8 12h8M8 15h5" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+export default function ProductToggle({ buttonStyle, bottomNav = false }: ProductToggleProps) {
   const [open, setOpen] = useState(false);
 
-  // 기존 기본 버튼 스타일 (백업본과 동일)
+  if (bottomNav) {
+    return (
+      <div style={{ position: "relative", overflow: "visible" }}>
+        <button
+          type="button"
+          onClick={() => setOpen((v) => !v)}
+          aria-expanded={open}
+          aria-label="판매중인 상품 보기"
+          style={{
+            width: "100%",
+            minHeight: 74,
+            borderRadius: 18,
+            border: "none",
+            background: "transparent",
+            color: "#1B1B1B",
+            boxShadow: "none",
+            padding: "10px 6px",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 6,
+            fontWeight: 800,
+            fontSize: 12,
+            lineHeight: 1.1,
+            letterSpacing: "-0.02em",
+            textAlign: "center",
+            cursor: "pointer",
+          }}
+        >
+          <span
+            style={{
+              width: 28,
+              height: 28,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              color: "#2A2A2A",
+            }}
+          >
+            <ProductIcon />
+          </span>
+          판매상품
+        </button>
+
+        {open && (
+          <div
+            style={{
+              position: "absolute",
+              left: "50%",
+              transform: "translateX(-50%)",
+              bottom: "calc(100% + 16px)",
+              width: "min(360px, calc(100vw - 28px))",
+              background: "#FFFFFF",
+              color: "#111111",
+              borderRadius: 20,
+              border: "1px solid rgba(0,0,0,0.08)",
+              boxShadow: "0 18px 38px rgba(0,0,0,0.22)",
+              padding: "14px 14px 12px",
+              zIndex: 60,
+            }}
+          >
+            <div
+              style={{
+                position: "absolute",
+                left: "50%",
+                bottom: -8,
+                width: 16,
+                height: 16,
+                background: "#FFFFFF",
+                borderRight: "1px solid rgba(0,0,0,0.08)",
+                borderBottom: "1px solid rgba(0,0,0,0.08)",
+                transform: "translateX(-50%) rotate(45deg)",
+              }}
+            />
+
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                gap: 12,
+                marginBottom: 10,
+              }}
+            >
+              <div>
+                <div
+                  style={{
+                    fontSize: 15,
+                    fontWeight: 900,
+                    letterSpacing: "-0.03em",
+                    marginBottom: 2,
+                  }}
+                >
+                  판매중인 상품
+                </div>
+                <div
+                  style={{
+                    fontSize: 12,
+                    color: "#666666",
+                    lineHeight: 1.35,
+                  }}
+                >
+                  이미지를 눌러 확대해서 볼 수 있습니다.
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setOpen(false)}
+                aria-label="상품 풍선 닫기"
+                style={{
+                  width: 30,
+                  height: 30,
+                  borderRadius: "50%",
+                  border: "1px solid rgba(0,0,0,0.08)",
+                  background: "#F7F7F7",
+                  color: "#333333",
+                  fontSize: 16,
+                  fontWeight: 800,
+                  lineHeight: 1,
+                  cursor: "pointer",
+                  flexShrink: 0,
+                }}
+              >
+                ×
+              </button>
+            </div>
+
+            <ProductPreview showToggle={false} />
+          </div>
+        )}
+      </div>
+    );
+  }
+
   const defaultButtonStyle: React.CSSProperties = useMemo(
     () => ({
       display: "block",
@@ -24,14 +170,13 @@ export default function ProductToggle({ buttonStyle }: ProductToggleProps) {
       background: "#f4eddc",
       color: "#111111",
       fontWeight: 700,
-      fontSize: 14, // ✅ 글자 크기 통일
+      fontSize: 14,
       textAlign: "center",
       cursor: "pointer",
     }),
     []
   );
 
-  // 부모가 스타일을 넘기면 기본 스타일 위에 덮어쓰기
   const mergedButtonStyle: React.CSSProperties = useMemo(
     () => ({ ...defaultButtonStyle, ...(buttonStyle ?? {}) }),
     [defaultButtonStyle, buttonStyle]
@@ -39,17 +184,14 @@ export default function ProductToggle({ buttonStyle }: ProductToggleProps) {
 
   return (
     <div>
-      {/* 부모 토글 버튼 (여기서만 인터랙션) */}
       <button
         type="button"
         style={mergedButtonStyle}
         onClick={() => setOpen((v) => !v)}
         onMouseEnter={(e) => {
-          // hover: 부모에서 background를 줬더라도, 기존 동작 유지
           (e.currentTarget as HTMLButtonElement).style.background = "#ede4cf";
         }}
         onMouseLeave={(e) => {
-          // leave: 부모에서 background를 줬다면 그 값으로, 아니면 기본값으로 복귀
           const bg =
             (buttonStyle && (buttonStyle as React.CSSProperties).background) ||
             defaultButtonStyle.background ||
@@ -60,11 +202,9 @@ export default function ProductToggle({ buttonStyle }: ProductToggleProps) {
         {open ? "상품 사진 닫기(확대해서 보세요.)" : "판매중인 상품 보기"}
       </button>
 
-      {/* 열렸을 때만 이미지, 내부 토글/힌트는 숨김(중복 방지) */}
       {open && (
         <div style={{ marginTop: 12 }}>
           <ProductPreview showToggle={false} />
-          {/* ✅ 힌트는 여기서만 1회 출력 */}
           <p style={{ color: "#ef4444", marginTop: 8, fontSize: 14 }}>
             이미지를 확대 할 수 있습니다.
           </p>
