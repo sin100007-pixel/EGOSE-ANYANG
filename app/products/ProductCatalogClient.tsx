@@ -91,14 +91,14 @@ function CatalogTableMarkup({
                           index === row.length - 1 ? "1px solid #DB1F2A" : "1px solid #D1D1D1",
                         borderBottom: "none",
                         borderTop: rowIndex === 0 ? "1px solid #DB1F2A" : "1px solid #D1D1D1",
-                        background: isEmpty ? "#F8F8F8" : "#FFFFFF",
+                        background: isEmpty ? "#F4F4F4" : "#D9D9D9",
                         color: "#111111",
                         textAlign: "center",
                         verticalAlign: "middle",
-                        padding: "6px 6px 4px",
+                        padding: "6px 4px",
                         fontSize: metrics.codeFont,
-                        fontWeight: 900,
-                        lineHeight: 1,
+                        fontWeight: 800,
+                        lineHeight: 1.1,
                         whiteSpace: "nowrap",
                       }}
                     >
